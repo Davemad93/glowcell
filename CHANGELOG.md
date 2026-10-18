@@ -2,6 +2,9 @@
 
 Versions are bumped on every change that gets pushed. The current version is shown at the bottom of the menu in the game (for example `v0.5.1`) and each version is tagged in this repo.
 
+## v0.6.1
+- Death now holds the camera in place for about a second so the screen shake is actually visible, and the shake is stronger and lasts longer
+
 ## v0.6.0
 - Tutorial: optional guided practice run from the menu (move, eat, eat a cell, eject, split, power-ups, spikes). Never forced, skippable at any time
 - Settings screen: music and effects volume, screen shake on/off, left- or right-handed touch buttons, joystick size. All saved on the device

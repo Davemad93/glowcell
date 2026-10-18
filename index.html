@@ -202,7 +202,7 @@ legend{padding:0;margin-bottom:8px}
       <div>
         <h1>GLOWCELL</h1>
         <p class="tag">Eat. Split. Don't get eaten.</p>
-        <p class="ver" id="ver">v0.6.0</p>
+        <p class="ver" id="ver">v0.6.1</p>
       </div>
       <div class="row2">
         <button class="btn ghost" type="button" id="tutBtn">Tutorial</button>
@@ -389,7 +389,7 @@ window.addEventListener('resize',resize); resize();
 var players=[], food=[], pellets=[], viruses=[], allCells=[], foodGrid=[];
 for(var gi=0;gi<GC*GC;gi++) foodGrid.push([]);
 var now=0, me=null, state='menu', paused=false, botTarget=24, wantBots=24, lbOrder=[];
-var cam={x:WORLD/2,y:WORLD/2,zoom:.55};
+var cam={x:WORLD/2,y:WORLD/2,zoom:.55}, camHold=0;   /* camHold: after you die the camera stays put for a moment so the hit is visible */
 var mouse={x:cw/2,y:ch/2}, wantSplit=false, keyW=false, ejectAt=0, nextLb=0, overTimer=0, touchEject=false, frameN=0;
 var JOY_R=64, joy={id:null,ox:0,oy:0,x:0,y:0}, hd={x:1,y:0};
 var stats={peak:0,t0:0,cells:0,players:0,survived:0,killer:'',bestRank:999,topTime:0,newBest:false};
@@ -822,7 +822,7 @@ function step(dt){
     var rr=rad(c.m);
     for(k=viruses.length-1;k>=0;k--){
       var v=viruses[k];
-      if(c.m>=v.m*1.25&&!(v.owner===c.o&&now<v.safeUntil)&&hyp(v.x-c.x,v.y-c.y)<rr-v.r*.35){if(c.o===me){addShake(8); fxBurst(v.x,v.y,78,14,300); fxRing(v.x,v.y,v.r,78);} popCell(c,v);viruses.splice(k,1);break;}
+      if(c.m>=v.m*1.25&&!(v.owner===c.o&&now<v.safeUntil)&&hyp(v.x-c.x,v.y-c.y)<rr-v.r*.35){if(c.o===me){addShake(10); fxBurst(v.x,v.y,78,14,300); fxRing(v.x,v.y,v.r,78);} popCell(c,v);viruses.splice(k,1);break;}
     }
   }
 
@@ -881,7 +881,7 @@ function step(dt){
       if(hyp(big.x-small.x,big.y-small.y)<rad(big.m)-rad(small.m)*.4){
         big.m+=small.m; small.dead=true; small.o.killer=big.o;
         if(big.o===me){stats.cells++; sfxCell(); fxEat(small.x,small.y,rad(small.m),small.o.hue,small.m);}
-        if(small.o===me){addShake(16); fxBurst(small.x,small.y,me.hue,18,320); fxRing(small.x,small.y,rad(small.m)*1.1,me.hue);}
+        if(small.o===me){addShake(26); fxBurst(small.x,small.y,me.hue,18,320); fxRing(small.x,small.y,rad(small.m)*1.1,me.hue);}
       }
     }
   }
@@ -907,7 +907,7 @@ function died(o,goneM){
   }
   if(o===me){
     sfxDeath();
-    state='dead'; ui.dataset.state='dead';
+    state='dead'; ui.dataset.state='dead'; camHold=1;
     stats.survived=now-stats.t0; stats.killer=k?k.name:'';
     stats.newBest=stats.peak>best&&best>0;
     if(stats.peak>best){best=Math.floor(stats.peak);store('glowcell.best',String(best));}
@@ -993,7 +993,7 @@ function beginRun(isTut){
   players.push(me);
   cam.x=s.x; cam.y=s.y; cam.zoom=Math.min(cw,ch)/(touchMode?520:700)*.88;
   stats.peak=START_M; stats.t0=now; stats.cells=0; stats.players=0; stats.killer=''; stats.bestRank=999; stats.topTime=0; stats.newBest=false;
-  fxp.length=0; shake=0; lastLbT=now;
+  fxp.length=0; shake=0; camHold=0; lastLbT=now;
   lastMass=-1; lastCells=''; lastBest=-1;
   touchEject=false; joy.id=null; wantSplit=false;
   paused=false; $('paused').hidden=true;
@@ -1105,6 +1105,7 @@ function updateCamera(dt){
     for(i=0;i<me.cells.length;i++){var q=me.cells[i]; size=Math.max(size,hyp(q.x-cx,q.y-cy)+rad(q.m));}
     tx=cx; ty=cy; tz=(Math.min(cw,ch)/(touchMode?520:700))*60/(60+size*.35); follow=9;
   }else{
+    if(camHold>0){camHold-=dt; return;}
     var lead=null;
     for(var k=0;k<lbOrder.length;k++){if(lbOrder[k].alive&&lbOrder[k].cells.length&&lbOrder[k]!==me){lead=lbOrder[k];break;}}
     if(lead){
@@ -1139,7 +1140,7 @@ function updateFx(dt){
     if(p.age>=p.life){fxp.splice(i,1); continue;}
     if(p.k===1){p.x+=p.vx*dt; p.y+=p.vy*dt; var dk=Math.exp(-3.5*dt); p.vx*=dk; p.vy*=dk;}
   }
-  if(shake>0){shake*=Math.exp(-dt*8); if(shake<.25) shake=0;}
+  if(shake>0){shake*=Math.exp(-dt*4.5); if(shake<.3) shake=0;}
 }
 function drawFx(z){
   if(!fxp.length) return;
