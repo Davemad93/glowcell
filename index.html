@@ -11,6 +11,7 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600&family=Unbounded:wght@500;800&display=swap" rel="stylesheet">
 <style>
+[hidden]{display:none!important}
 /* Layout: full-bleed arena canvas. HUD panels pinned to the four corners of a grid, menu sits left over the live arena, results card centers on death. */
 :root{
   --ink:#080716;
@@ -72,7 +73,7 @@ kbd{font:600 11px var(--font-mono);color:var(--text);border:1px solid var(--line
 
 /* Sheets */
 .sheet{grid-area:mid;pointer-events:auto;min-width:0}
-#menu{align-self:center;justify-self:start;width:min(440px,100%);max-height:100%;overflow-y:auto;overscroll-behavior:contain;touch-action:pan-y;padding:22px 22px 20px;display:flex;flex-direction:column;gap:18px}
+#menu{align-self:center;justify-self:start;width:min(440px,100%);max-height:100%;overflow-y:auto;overscroll-behavior:contain;touch-action:pan-y;padding:22px 22px 0;display:flex;flex-direction:column;gap:18px}
 #menu h1{margin:0;font:800 clamp(38px,7vw,60px)/.95 var(--font-display);letter-spacing:-.04em;text-shadow:0 0 28px rgba(255,61,154,.65),0 0 2px rgba(255,255,255,.4)}
 #menu .tag{margin:6px 0 0;color:var(--dim);font-size:13px}
 #menu .ver{margin:2px 0 0;color:var(--dim);opacity:.6;font-size:11px;letter-spacing:.06em}
@@ -124,8 +125,41 @@ legend{padding:0;margin-bottom:8px}
 #ui[data-touch="1"] #miniWrap{grid-area:bl;justify-self:start;padding:4px}
 #ui[data-touch="1"] #mini{width:92px;height:92px}
 #ui[data-touch="1"] .kb,#ui:not([data-touch="1"]) .tc{display:none}
+
+.row2{display:flex;gap:10px}
+.cta{display:flex;flex-direction:column;gap:10px;position:sticky;bottom:0;padding:26px 0 18px;margin-top:-14px;background:linear-gradient(to bottom,rgba(11,10,30,0),rgb(11,10,30) 22px);z-index:2}
+#menu>:last-child{margin-bottom:20px}
+.row2 .btn{flex:1;padding:11px 14px;font-size:13px}
+#settings{align-self:center;justify-self:start;width:min(440px,100%);max-height:100%;overflow-y:auto;overscroll-behavior:contain;touch-action:pan-y;padding:22px;display:flex;flex-direction:column;gap:18px}
+#settings h2{margin:0;font:800 clamp(22px,4vw,28px)/1.1 var(--font-display);letter-spacing:-.03em}
+.range{display:flex;align-items:center;gap:12px}
+.range input{flex:1;min-width:0;accent-color:var(--cyan);height:28px;margin:0;touch-action:pan-y}
+.range output{width:44px;text-align:right;font-variant-numeric:tabular-nums;color:var(--dim);font-size:12px}
+.badge{display:inline-block;margin-left:8px;padding:2px 8px;border-radius:4px;background:rgba(198,255,61,.14);border:1px solid var(--lime);color:var(--lime);font:600 11px var(--font-mono);letter-spacing:.08em;text-transform:uppercase;vertical-align:middle}
+#tut{grid-area:mid;align-self:start;justify-self:center;width:min(440px,100%);pointer-events:auto;display:flex;flex-direction:column;gap:8px;margin-top:4px}
+#tut .head,#tut .foot{display:flex;align-items:center;justify-content:space-between;gap:10px}
+#tut h3{margin:0;font:800 18px/1.15 var(--font-display);letter-spacing:-.02em}
+#tut p{margin:0;font-size:13px;color:var(--text)}
+#tut .dots{display:flex;gap:5px}
+#tut .dots i{display:block;width:7px;height:7px;border-radius:50%;background:var(--line)}
+#tut .dots i.on{background:var(--cyan)}
+#tut .dots i.ok{background:var(--lime)}
+#tut.done{border-color:var(--lime)}
+#tut.done h3{color:var(--lime)}
+#ui[data-tut="1"] #feed{display:none}
+#ui[data-touch="1"][data-hand="left"] #touchBtns{grid-area:bl;justify-self:start}
+#ui[data-touch="1"][data-hand="left"] #btnSplit{right:auto;left:0}
+#ui[data-touch="1"][data-hand="left"] #btnEject{right:auto;left:100px}
+#ui[data-touch="1"][data-hand="left"] #btnPause{right:auto;left:22px}
+#ui[data-touch="1"][data-hand="left"] #btnMenu{right:auto;left:80px}
+#ui[data-touch="1"][data-hand="left"] #miniWrap{grid-area:br;justify-self:end}
 @media (max-width:640px){
   .opt{display:none}
+  #menu{gap:14px;padding:18px 18px 0}
+  #menu form{gap:14px !important}
+  #tut{padding:8px 10px;gap:6px}
+  #tut h3{font-size:15px}
+  #tut p{font-size:12px}
   #fxBar{gap:4px}
   .fx{font-size:10.5px;padding:3px 8px;gap:6px}
   .fx i{width:8px;height:8px}
@@ -136,7 +170,7 @@ legend{padding:0;margin-bottom:8px}
   #hudBoard li{font-size:11px;grid-template-columns:16px minmax(0,1fr) auto;gap:6px}
 }
 @media (max-height:520px){
-  #menu{padding:14px 16px;gap:10px}
+  #menu{padding:14px 16px 0;gap:10px}
   #menu h1{font-size:32px}
   #menu form{gap:10px !important}
   #over{padding:16px;gap:12px}
@@ -168,7 +202,11 @@ legend{padding:0;margin-bottom:8px}
       <div>
         <h1>GLOWCELL</h1>
         <p class="tag">Eat. Split. Don't get eaten.</p>
-        <p class="ver" id="ver">v0.5.2</p>
+        <p class="ver" id="ver">v0.6.0</p>
+      </div>
+      <div class="row2">
+        <button class="btn ghost" type="button" id="tutBtn">Tutorial</button>
+        <button class="btn ghost" type="button" id="setBtn">Settings</button>
       </div>
       <form id="playForm" autocomplete="off" style="display:flex;flex-direction:column;gap:18px">
         <label for="name" class="label">Name</label>
@@ -176,6 +214,12 @@ legend{padding:0;margin-bottom:8px}
         <fieldset>
           <legend class="label">Your color</legend>
           <div class="swatches" id="swatches"></div>
+          <div class="seg" id="patSeg" style="margin-top:12px" role="group" aria-label="Pattern">
+            <label><input type="radio" name="pat" id="pat-0" value="0"><span>Plain</span></label>
+            <label><input type="radio" name="pat" id="pat-1" value="1"><span>Dots</span></label>
+            <label><input type="radio" name="pat" id="pat-2" value="2"><span>Rings</span></label>
+            <label><input type="radio" name="pat" id="pat-3" value="3"><span>Star</span></label>
+          </div>
         </fieldset>
         <fieldset>
           <legend class="label">Bots in the arena</legend>
@@ -202,8 +246,10 @@ legend{padding:0;margin-bottom:8px}
             <label><input type="radio" name="fx" id="fx-off" value="off"><span>Off</span></label>
           </div>
         </fieldset>
-        <button class="btn ghost" type="button" id="resumeBtn" hidden>Resume</button>
-        <button class="btn" type="submit" id="playBtn">Play</button>
+        <div class="cta">
+          <button class="btn ghost" type="button" id="resumeBtn" hidden>Resume</button>
+          <button class="btn" type="submit" id="playBtn">Play</button>
+        </div>
       </form>
       <div class="controls kb">
         <span><kbd>Mouse</kbd> steer</span>
@@ -223,9 +269,44 @@ legend{padding:0;margin-bottom:8px}
       <p class="fine">Plays with mouse and keyboard, or by touch on a phone or tablet. Best mass: <span id="menuBest">0</span></p>
     </section>
 
+    <section id="settings" class="sheet panel" hidden>
+      <h2>Settings</h2>
+      <fieldset>
+        <legend class="label">Music volume</legend>
+        <div class="range"><input type="range" id="volMusic" min="0" max="100" step="5" aria-label="Music volume"><output id="volMusicVal">100%</output></div>
+      </fieldset>
+      <fieldset>
+        <legend class="label">Effects volume</legend>
+        <div class="range"><input type="range" id="volFx" min="0" max="100" step="5" aria-label="Effects volume"><output id="volFxVal">100%</output></div>
+      </fieldset>
+      <fieldset>
+        <legend class="label">Screen shake</legend>
+        <div class="seg">
+          <label><input type="radio" name="shk" id="shk-on" value="on"><span>On</span></label>
+          <label><input type="radio" name="shk" id="shk-off" value="off"><span>Off</span></label>
+        </div>
+      </fieldset>
+      <fieldset>
+        <legend class="label">Touch buttons</legend>
+        <div class="seg">
+          <label><input type="radio" name="hand" id="hand-r" value="right"><span>Right hand</span></label>
+          <label><input type="radio" name="hand" id="hand-l" value="left"><span>Left hand</span></label>
+        </div>
+      </fieldset>
+      <fieldset>
+        <legend class="label">Joystick size</legend>
+        <div class="seg">
+          <label><input type="radio" name="joy" id="joy-s" value="s"><span>Small</span></label>
+          <label><input type="radio" name="joy" id="joy-m" value="m"><span>Medium</span></label>
+          <label><input type="radio" name="joy" id="joy-l" value="l"><span>Large</span></label>
+        </div>
+      </fieldset>
+      <button class="btn" type="button" id="setBack">Back</button>
+    </section>
+
     <section id="over" class="sheet panel" hidden>
       <div>
-        <span class="label">Game over</span>
+        <span class="label">Game over</span><span class="badge" id="newBest" hidden>New best</span>
         <h2 id="overTitle">Eaten</h2>
       </div>
       <div class="grid">
@@ -233,12 +314,21 @@ legend{padding:0;margin-bottom:8px}
         <div><span class="label">Survived</span><b id="sTime">0:00</b></div>
         <div><span class="label">Cells eaten</span><b id="sCells">0</b></div>
         <div><span class="label">Players eaten</span><b id="sPlayers">0</b></div>
+        <div><span class="label">Best rank</span><b id="sRank">-</b></div>
+        <div><span class="label">Time as #1</span><b id="sTop">0:00</b></div>
       </div>
       <div class="row">
         <button class="btn" type="button" id="againBtn">Play again</button>
         <button class="btn ghost" type="button" id="overMenuBtn">Menu</button>
       </div>
     </section>
+
+    <div id="tut" class="hud panel" hidden>
+      <div class="head"><span class="label" id="tutCount">Tutorial</span><button type="button" class="mini-btn" id="tutExit">Exit</button></div>
+      <h3 id="tutTitle"></h3>
+      <p id="tutText"></p>
+      <div class="foot"><div class="dots" id="tutDots"></div><button type="button" class="mini-btn" id="tutNext">Skip step</button></div>
+    </div>
 
     <div id="paused" class="panel" hidden>Paused. Tap or press P to resume.</div>
 
@@ -265,7 +355,8 @@ legend{padding:0;margin-bottom:8px}
 var EAT_RATIO=1.15; /* a cell eats another when it has at least 15% more mass */
 var WORLD=5000, MAXC=16, START_M=22, VIR_M=100, VIR_R=50, MAX_VIRUS=40, MIN_SPIKE_M=60, MAX_SPIKE_M=450, FOOD_N=1300, TAU=Math.PI*2, GS=250, GC=Math.ceil(WORLD/GS);
 var HUES=[328,190,40,262,160,12,218,78];
-var HUE_NAMES=['Magenta','Cyan','Amber','Violet','Mint','Coral','Blue','Lime'];
+var PHUES=HUES.concat([58,119,240,295]);   /* colors the player can choose; bots and food use HUES */
+var HUE_NAMES=['Magenta','Cyan','Amber','Violet','Mint','Coral','Blue','Lime','Yellow','Green','Indigo','Orchid'];
 var NAMES=['Nebula','Pip','Orbit','Mochi','Vortex','Juno','Blip','Sprout','Quasar','Tofu','Zephyr','Gumdrop','Cinder','Marlo','Echo','Pixel','Lumen','Biscuit','Nova','Wisp','Otto','Kiwi','Rune','Comet','Fig','Halo','Mango','Riff','Sable','Tango'];
 function $(id){return document.getElementById(id);}
 function rnd(a,b){return a+Math.random()*(b-a);}
@@ -301,10 +392,24 @@ var now=0, me=null, state='menu', paused=false, botTarget=24, wantBots=24, lbOrd
 var cam={x:WORLD/2,y:WORLD/2,zoom:.55};
 var mouse={x:cw/2,y:ch/2}, wantSplit=false, keyW=false, ejectAt=0, nextLb=0, overTimer=0, touchEject=false, frameN=0;
 var JOY_R=64, joy={id:null,ox:0,oy:0,x:0,y:0}, hd={x:1,y:0};
-var stats={peak:0,t0:0,cells:0,players:0,survived:0,killer:''};
+var stats={peak:0,t0:0,cells:0,players:0,survived:0,killer:'',bestRank:999,topTime:0,newBest:false};
+var lastLbT=0, tut=null;
 var best=parseInt(store('glowcell.best')||'0',10)||0;
 var pick={hue:parseInt(store('glowcell.hue')||'0',10)||0, name:store('glowcell.name')||'', snd:store('glowcell.snd')||'off', sfx:store('glowcell.sfx')!=='off'};
 if(['off','drift','pulse','arcade'].indexOf(pick.snd)<0) pick.snd='off';
+if(!(pick.hue>=0&&pick.hue<PHUES.length)) pick.hue=0;
+function numStore(k,d){var v=parseFloat(store(k)); return isNaN(v)?d:clamp(v,0,1);}
+var reduceMotion=false;
+try{reduceMotion=!!(window.matchMedia&&window.matchMedia('(prefers-reduced-motion: reduce)').matches);}catch(e){}
+var shk=store('glowcell.shake');
+pick.pat=clamp(parseInt(store('glowcell.pat')||'0',10)||0,0,3);
+pick.vm=numStore('glowcell.vm',1); pick.vs=numStore('glowcell.vs',1);
+pick.shake=shk==='on'?true:(shk==='off'?false:!reduceMotion);
+pick.hand=store('glowcell.hand')==='left'?'left':'right';
+pick.joy=['s','m','l'].indexOf(store('glowcell.joy'))>=0?store('glowcell.joy'):'m';
+var JOY_SIZES={s:48,m:64,l:84};
+JOY_R=JOY_SIZES[pick.joy]; ui.dataset.hand=pick.hand;
+function vcurve(v){return v*v;}   /* sliders feel more even with a squared curve */
 
 function newOwner(name,hue,isBot){
   return {name:name,hue:hue,isBot:isBot,cells:[],tx:WORLD/2,ty:WORLD/2,alive:true,respawnAt:0,think:0,aggr:rnd(.3,1),splitCD:0,wander:rnd(0,TAU),kills:0,total:0,killer:null,fx:{speed:0,shield:0,spike:0,magnet:0},nextDrop:0};
@@ -408,7 +513,9 @@ function updatePowers(){
     for(var k=0;k<allCells.length;k++){
       var c=allCells[k]; if(c.dead) continue;
       if(hyp(c.x-p.x,c.y-p.y)<rad(c.m)+POW_R*.5){
-        givePower(c.o,p.type); p.state='cool'; p.cd=now+POW_CD; break;
+        givePower(c.o,p.type); p.state='cool'; p.cd=now+POW_CD;
+        if(c.o===me){fxRing(p.x,p.y,POW_R*1.4,POW_HUE[p.type]); fxBurst(p.x,p.y,POW_HUE[p.type],12,260);}
+        break;
       }
     }
   }
@@ -637,15 +744,15 @@ function step(dt){
     if(wantSplit||wantEj){
       var ptx=me.tx, pty=me.ty;
       if(touchMode&&joy.id===null){me.tx=tcx+hd.x*400; me.ty=tcy+hd.y*400;}
-      if(wantSplit){var n0=me.cells.length; doSplit(me); wantSplit=false; if(me.cells.length>n0) sfxSplit();}
-      if(wantEj){var p0=pellets.length; doEject(me); ejectAt=now+.11; if(pellets.length>p0) sfxEject();}
+      if(wantSplit){var n0=me.cells.length; doSplit(me); wantSplit=false; if(me.cells.length>n0){sfxSplit(); if(tut) tut.ev.split++;}}
+      if(wantEj){var p0=pellets.length; doEject(me); ejectAt=now+.11; if(pellets.length>p0){sfxEject(); if(tut) tut.ev.eject++;}}
       me.tx=ptx; me.ty=pty;
     }
   }else wantSplit=false;
 
   for(i=0;i<players.length;i++){
     p=players[i]; if(!p.isBot) continue;
-    if(!p.alive){if(now>=p.respawnAt) respawnBot(p); continue;}
+    if(!p.alive){if(!p.dummy&&now>=p.respawnAt) respawnBot(p); continue;}
     if(now>=p.think){thinkBot(p);p.think=now+rnd(.18,.34);}
   }
 
@@ -715,7 +822,7 @@ function step(dt){
     var rr=rad(c.m);
     for(k=viruses.length-1;k>=0;k--){
       var v=viruses[k];
-      if(c.m>=v.m*1.25&&!(v.owner===c.o&&now<v.safeUntil)&&hyp(v.x-c.x,v.y-c.y)<rr-v.r*.35){popCell(c,v);viruses.splice(k,1);break;}
+      if(c.m>=v.m*1.25&&!(v.owner===c.o&&now<v.safeUntil)&&hyp(v.x-c.x,v.y-c.y)<rr-v.r*.35){if(c.o===me){addShake(8); fxBurst(v.x,v.y,78,14,300); fxRing(v.x,v.y,v.r,78);} popCell(c,v);viruses.splice(k,1);break;}
     }
   }
 
@@ -773,7 +880,8 @@ function step(dt){
       if(small.o.fx.shield>now) continue;
       if(hyp(big.x-small.x,big.y-small.y)<rad(big.m)-rad(small.m)*.4){
         big.m+=small.m; small.dead=true; small.o.killer=big.o;
-        if(big.o===me){stats.cells++; sfxCell();}
+        if(big.o===me){stats.cells++; sfxCell(); fxEat(small.x,small.y,rad(small.m),small.o.hue,small.m);}
+        if(small.o===me){addShake(16); fxBurst(small.x,small.y,me.hue,18,320); fxRing(small.x,small.y,rad(small.m)*1.1,me.hue);}
       }
     }
   }
@@ -801,6 +909,7 @@ function died(o,goneM){
     sfxDeath();
     state='dead'; ui.dataset.state='dead';
     stats.survived=now-stats.t0; stats.killer=k?k.name:'';
+    stats.newBest=stats.peak>best&&best>0;
     if(stats.peak>best){best=Math.floor(stats.peak);store('glowcell.best',String(best));}
     overTimer=window.setTimeout(showOver,650);
   }
@@ -825,6 +934,8 @@ function computeLeaderboard(){
   }
   list.sort(function(a,b){return b.total-a.total;});
   lbOrder=list;
+  var dtl=Math.min(.5,Math.max(0,now-lastLbT)); lastLbT=now;
+  if(me&&me.alive&&state==='play'&&!tut){var ri=list.indexOf(me)+1; if(ri>0&&ri<stats.bestRank) stats.bestRank=ri; if(ri===1) stats.topTime+=dtl;}
   if(me&&me.alive&&me.total>stats.peak) stats.peak=me.total;
   var rows=[];
   var topN=cw<640?5:8;
@@ -861,24 +972,28 @@ function showOver(){
   $('sTime').textContent=fmtTime(stats.survived);
   $('sCells').textContent=stats.cells;
   $('sPlayers').textContent=stats.players;
+  $('sRank').textContent=stats.bestRank<999?'#'+stats.bestRank:'-'; $('sTop').textContent=fmtTime(stats.topTime); $('newBest').hidden=!stats.newBest;
   $('over').hidden=false;
   try{$('againBtn').focus({preventScroll:true});}catch(e){}
 }
 
 /* ---------- game flow ---------- */
-function startGame(){
+function startGame(){beginRun(false);}
+function startTutorial(){beginRun(true);}
+function beginRun(isTut){
   var raw=String($('name').value||'').replace(/\s+/g,' ').trim().slice(0,14);
   pick.name=raw; store('glowcell.name',raw); store('glowcell.hue',String(pick.hue));
   window.clearTimeout(overTimer);
   /* every run starts from a fresh world: new bots at starting sizes, new food, spikes in new random places */
-  botTarget=wantBots; initWorld();
-  me=newOwner(raw||'Cell',HUES[pick.hue],false);
+  botTarget=isTut?0:wantBots; initWorld();
+  me=newOwner(raw||'Cell',PHUES[pick.hue],false); me.pat=pick.pat;
   allCells.length=0;
   for(var i=0;i<players.length;i++) for(var j=0;j<players[i].cells.length;j++) allCells.push(players[i].cells[j]);
   var s=safeSpot(); spawnCell(me,START_M,s.x,s.y); me.tx=s.x; me.ty=s.y;
   players.push(me);
   cam.x=s.x; cam.y=s.y; cam.zoom=Math.min(cw,ch)/(touchMode?520:700)*.88;
-  stats.peak=START_M; stats.t0=now; stats.cells=0; stats.players=0; stats.killer='';
+  stats.peak=START_M; stats.t0=now; stats.cells=0; stats.players=0; stats.killer=''; stats.bestRank=999; stats.topTime=0; stats.newBest=false;
+  fxp.length=0; shake=0; lastLbT=now;
   lastMass=-1; lastCells=''; lastBest=-1;
   touchEject=false; joy.id=null; wantSplit=false;
   paused=false; $('paused').hidden=true;
@@ -890,10 +1005,11 @@ function startGame(){
     if(pick.snd!=='off') auPlay(pick.snd);
   }
   state='play'; ui.dataset.state='play';
-  $('menu').hidden=true; $('over').hidden=true;
+  $('menu').hidden=true; $('over').hidden=true; $('settings').hidden=true;
   $('feed').textContent='';
   if(document.activeElement&&document.activeElement.blur) document.activeElement.blur();
   computeLeaderboard();
+  if(isTut) tutBegin(); else tutClear();
 }
 function setPaused(v){
   if(state!=='play'||menuOpen) return;
@@ -906,6 +1022,7 @@ window.addEventListener('keydown',function(e){
   var typing=!!(e.target&&e.target.tagName==='INPUT');
   if(e.code==='Escape'||(e.code==='KeyM'&&!typing&&!e.repeat)){
     if(e.code==='Escape'&&e.repeat) return;
+    if(!$('settings').hidden){showSettings(false); return;}
     if(menuOpen){if(state==='play') closeMenu();} else openMenu();
     return;
   }
@@ -960,12 +1077,12 @@ $('againBtn').addEventListener('click',startGame);
 /* menu controls */
 (function(){
   var box=$('swatches');
-  for(var i=0;i<HUES.length;i++){
+  for(var i=0;i<PHUES.length;i++){
     var lab=document.createElement('label'), inp=document.createElement('input'), sw=document.createElement('i');
     inp.type='radio'; inp.name='hue'; inp.id='hue-'+i; inp.value=String(i); inp.setAttribute('aria-label',HUE_NAMES[i]);
     if(i===pick.hue) inp.checked=true;
-    sw.style.background='radial-gradient(circle at 35% 30%,'+hsl(HUES[i],100,80)+','+hsl(HUES[i],95,55)+' 60%,'+hsl(HUES[i],90,34)+')';
-    sw.style.setProperty('--sw',hsl(HUES[i],100,60,.9));
+    sw.style.background='radial-gradient(circle at 35% 30%,'+hsl(PHUES[i],100,80)+','+hsl(PHUES[i],95,55)+' 60%,'+hsl(PHUES[i],90,34)+')';
+    sw.style.setProperty('--sw',hsl(PHUES[i],100,60,.9));
     lab.appendChild(inp); lab.appendChild(sw); box.appendChild(lab);
     (function(idx,el){el.addEventListener('change',function(){if(el.checked) pick.hue=idx;});})(i,inp);
   }
@@ -1001,6 +1118,66 @@ function updateCamera(dt){
   cam.x+=(tx-cam.x)*k1; cam.y+=(ty-cam.y)*k1; cam.zoom+=(tz-cam.zoom)*k2;
 }
 
+/* ---------- effects: bursts, rings, floating numbers, screen shake ---------- */
+var fxp=[], shake=0;
+function fxTrim(){if(fxp.length>90) fxp.splice(0,fxp.length-90);}
+function fxRing(x,y,r,hue){fxp.push({k:0,x:x,y:y,r:r,hue:hue,age:0,life:.45}); fxTrim();}
+function fxBurst(x,y,hue,n,spd){
+  if(quality<1) n=Math.ceil(n/2);
+  for(var i=0;i<n;i++){
+    var a=Math.random()*TAU, sp=spd*(.35+Math.random()*.65);
+    fxp.push({k:1,x:x,y:y,vx:Math.cos(a)*sp,vy:Math.sin(a)*sp,hue:hue,age:0,life:.35+Math.random()*.3});
+  }
+  fxTrim();
+}
+function fxText(x,y,txt,hue){fxp.push({k:2,x:x,y:y,txt:txt,hue:hue,age:0,life:1.1}); fxTrim();}
+function fxEat(x,y,r,hue,m){fxRing(x,y,r,hue); fxBurst(x,y,hue,10,220+r*2); fxText(x,y-r*.6,'+'+Math.floor(m),hue);}
+function addShake(a){if(pick.shake&&a>shake) shake=a;}
+function updateFx(dt){
+  for(var i=fxp.length-1;i>=0;i--){
+    var p=fxp[i]; p.age+=dt;
+    if(p.age>=p.life){fxp.splice(i,1); continue;}
+    if(p.k===1){p.x+=p.vx*dt; p.y+=p.vy*dt; var dk=Math.exp(-3.5*dt); p.vx*=dk; p.vy*=dk;}
+  }
+  if(shake>0){shake*=Math.exp(-dt*8); if(shake<.25) shake=0;}
+}
+function drawFx(z){
+  if(!fxp.length) return;
+  ctx.save();
+  for(var i=0;i<fxp.length;i++){
+    var p=fxp[i], t=p.age/p.life;
+    if(p.k===0){
+      ctx.lineWidth=Math.max(3/z,p.r*.09)*(1-t); ctx.strokeStyle=hsl(p.hue,100,78,(1-t)*.9);
+      ctx.beginPath(); ctx.arc(p.x,p.y,p.r*(1+t*.9),0,TAU); ctx.stroke();
+    }else if(p.k===1){
+      ctx.fillStyle=hsl(p.hue,100,72,1-t);
+      ctx.beginPath(); ctx.arc(p.x,p.y,(3.4-t*2)/z,0,TAU); ctx.fill();
+    }else{
+      var fs=16/z; ctx.font='700 '+fs+'px '+FF; ctx.textAlign='center'; ctx.textBaseline='middle'; ctx.lineJoin='round';
+      var ty=p.y-t*60/z, al=1-t*t;
+      ctx.lineWidth=fs*.22; ctx.strokeStyle='rgba(8,7,22,'+(.85*al)+')'; ctx.strokeText(p.txt,p.x,ty);
+      ctx.fillStyle=hsl(p.hue,100,82,al); ctx.fillText(p.txt,p.x,ty);
+    }
+  }
+  ctx.restore();
+}
+/* skin patterns, drawn on top of the cell body */
+function drawPat(c,r,p){
+  var a0=now*.35, i;
+  if(p===1){
+    ctx.fillStyle='rgba(255,255,255,.42)'; ctx.beginPath();
+    for(i=0;i<6;i++){var a=a0+i*TAU/6, px=c.x+Math.cos(a)*r*.5, py=c.y+Math.sin(a)*r*.5; ctx.moveTo(px+r*.075,py); ctx.arc(px,py,r*.075,0,TAU);}
+    ctx.fill();
+  }else if(p===2){
+    ctx.lineWidth=r*.035; ctx.strokeStyle='rgba(255,255,255,.3)'; ctx.beginPath();
+    ctx.arc(c.x,c.y,r*.28,0,TAU); ctx.moveTo(c.x+r*.5,c.y); ctx.arc(c.x,c.y,r*.5,0,TAU); ctx.stroke();
+  }else if(p===3){
+    ctx.fillStyle='rgba(255,255,255,.24)'; ctx.beginPath();
+    for(i=0;i<10;i++){var b=a0*.6+i*Math.PI/5-Math.PI/2, rr=(i%2)?r*.2:r*.5, qx=c.x+Math.cos(b)*rr, qy=c.y+Math.sin(b)*rr; if(i===0) ctx.moveTo(qx,qy); else ctx.lineTo(qx,qy);}
+    ctx.closePath(); ctx.fill();
+  }
+}
+
 /* ---------- rendering ---------- */
 var FOOD_R=6, FOOD_BIG_R=9;
 var vis=[[],[],[],[],[],[],[],[]], ents=[], entPool=[], entN=0;
@@ -1034,6 +1211,7 @@ function drawCell(c,isMe,rel){
     ctx.beginPath(); ctx.arc(c.x,c.y,r*.74,0,TAU); ctx.stroke();
     ctx.fillStyle='rgba(255,255,255,.26)'; ctx.beginPath();
     ctx.ellipse(c.x-r*.34,c.y-r*.4,r*.22,r*.12,-.65,0,TAU); ctx.fill();
+    if(o.pat) drawPat(c,r,o.pat);
   }
   if(isMe){
     ctx.lineWidth=1.5/z; ctx.strokeStyle='rgba(255,255,255,.55)';
@@ -1150,7 +1328,9 @@ function render(){
   var z=cam.zoom;
   ctx.setTransform(dpr,0,0,dpr,0,0);
   ctx.fillStyle='#05040f'; ctx.fillRect(0,0,cw,ch);
-  ctx.setTransform(dpr*z,0,0,dpr*z,dpr*(cw/2-cam.x*z),dpr*(ch/2-cam.y*z));
+  var shx=0, shy=0;
+  if(shake>0){shx=(Math.random()*2-1)*shake; shy=(Math.random()*2-1)*shake;}
+  ctx.setTransform(dpr*z,0,0,dpr*z,dpr*(cw/2-cam.x*z+shx),dpr*(ch/2-cam.y*z+shy));
   var vx0=cam.x-cw/2/z, vx1=cam.x+cw/2/z, vy0=cam.y-ch/2/z, vy1=cam.y+ch/2/z, i, f;
 
   ctx.fillStyle='#0d0b24'; ctx.fillRect(0,0,WORLD,WORLD);
@@ -1238,6 +1418,7 @@ function render(){
     }
     if(e.v) drawVirus(e.v); else drawCell(e.c,e.c.o===me,rel);
   }
+  drawFx(z);
   ctx.setTransform(dpr,0,0,dpr,0,0);
   if(joy.id!==null&&state==='play'){
     var jx=joy.x-joy.ox, jy=joy.y-joy.oy, jm=hyp(jx,jy), jk=jm>JOY_R?JOY_R/jm:1;
@@ -1300,8 +1481,8 @@ function auInit(){
   if(!C) return false;
   try{
     var c=new C();
-    var m=c.createGain(); m.gain.value=.5; m.connect(c.destination);
-    var sx=c.createGain(); sx.gain.value=.9; sx.connect(c.destination);
+    var m=c.createGain(); m.gain.value=.5*vcurve(pick.vm); m.connect(c.destination);
+    var sx=c.createGain(); sx.gain.value=.9*vcurve(pick.vs); sx.connect(c.destination);
     var d=c.createDelay(1); d.delayTime.value=.34;
     var fb=c.createGain(); fb.gain.value=.38;
     var lp=c.createBiquadFilter(); lp.type='lowpass'; lp.frequency.value=2400;
@@ -1489,13 +1670,17 @@ function sfxDeath(){
 var menuOpen=true;
 function auLevel(){
   var c=AU.ctx; if(!c||!AU.master) return;
-  try{AU.master.gain.setTargetAtTime(menuOpen?.5:.32,c.currentTime,.25);}catch(e){}
+  try{AU.master.gain.setTargetAtTime((menuOpen?.5:.32)*vcurve(pick.vm),c.currentTime,.25);}catch(e){}
+}
+function auSfxLevel(){
+  var c=AU.ctx; if(!c||!AU.sfxBus) return;
+  try{AU.sfxBus.gain.setTargetAtTime(.9*vcurve(pick.vs),c.currentTime,.05);}catch(e){}
 }
 function openMenu(){
   if(menuOpen) return;
   if(state==='play'){paused=true; $('paused').hidden=true; joy.id=null; touchEject=false; keyW=false; wantSplit=false;}
   menuOpen=true;
-  $('over').hidden=true;
+  $('over').hidden=true; $('settings').hidden=true;
   $('menu').hidden=false; ui.dataset.state='menu';
   $('resumeBtn').hidden=(state!=='play');
   $('playBtn').textContent=(state==='play')?'New game':'Play';
@@ -1504,7 +1689,7 @@ function openMenu(){
 function closeMenu(){
   if(!menuOpen||state!=='play') return;
   menuOpen=false; paused=false;
-  $('menu').hidden=true; ui.dataset.state='play'; $('paused').hidden=true;
+  $('settings').hidden=true; $('menu').hidden=true; ui.dataset.state='play'; $('paused').hidden=true;
   if(window.document.activeElement&&window.document.activeElement.blur) window.document.activeElement.blur();
   auLevel();
 }
@@ -1522,6 +1707,133 @@ $('overMenuBtn').addEventListener('click',openMenu);
       window.setTimeout(sfxCell,60);
     }
   });
+});
+
+/* ---------- settings ---------- */
+function showSettings(on){
+  $('menu').hidden=on; $('settings').hidden=!on;
+  if(on) $('settings').scrollTop=0;
+}
+(function(){
+  var vm=$('volMusic'), vf=$('volFx');
+  function labels(){$('volMusicVal').textContent=Math.round(pick.vm*100)+'%'; $('volFxVal').textContent=Math.round(pick.vs*100)+'%';}
+  vm.value=String(Math.round(pick.vm*100)); vf.value=String(Math.round(pick.vs*100)); labels();
+  vm.addEventListener('input',function(){pick.vm=clamp((parseInt(vm.value,10)||0)/100,0,1); store('glowcell.vm',String(pick.vm)); labels(); auLevel();});
+  vf.addEventListener('input',function(){pick.vs=clamp((parseInt(vf.value,10)||0)/100,0,1); store('glowcell.vs',String(pick.vs)); labels(); auSfxLevel();});
+  vf.addEventListener('change',function(){
+    if(pick.sfx&&auInit()){
+      var c=AU.ctx; if(c.state==='suspended'){try{c.resume();}catch(e){}}
+      auSfxLevel(); sfxCell();
+    }
+  });
+  function radios(prefix,ids,cur,fn){
+    ids.forEach(function(id){
+      var el=$(prefix+id[0]); if(!el) return;
+      if(id[1]===cur) el.checked=true;
+      el.addEventListener('change',function(){if(el.checked) fn(id[1]);});
+    });
+  }
+  radios('shk-',[['on',true],['off',false]],pick.shake,function(v){pick.shake=v; store('glowcell.shake',v?'on':'off'); if(v) addShake(6);});
+  radios('hand-',[['r','right'],['l','left']],pick.hand,function(v){pick.hand=v; store('glowcell.hand',v); ui.dataset.hand=v;});
+  radios('joy-',[['s','s'],['m','m'],['l','l']],pick.joy,function(v){pick.joy=v; store('glowcell.joy',v); JOY_R=JOY_SIZES[v];});
+  radios('pat-',[['0',0],['1',1],['2',2],['3',3]],pick.pat,function(v){pick.pat=v; store('glowcell.pat',String(v));});
+  $('setBtn').addEventListener('click',function(){showSettings(true);});
+  $('setBack').addEventListener('click',function(){showSettings(false);});
+  $('tutBtn').addEventListener('click',startTutorial);
+})();
+
+/* ---------- tutorial: a short guided practice run, only when asked for ---------- */
+function meCenter(){
+  var t=0,x=0,y=0,i;
+  for(i=0;i<me.cells.length;i++){var c=me.cells[i]; t+=c.m; x+=c.x*c.m; y+=c.y*c.m;}
+  return t>0?{x:x/t,y:y/t,m:t}:{x:0,y:0,m:0};
+}
+function topUp(min){
+  var t=0,big=me.cells[0],i;
+  for(i=0;i<me.cells.length;i++){t+=me.cells[i].m; if(me.cells[i].m>big.m) big=me.cells[i];}
+  if(t<min) big.m+=min-t;
+}
+function tutAhead(d){
+  var c=meCenter(), a=Math.random()*TAU;
+  return {x:clamp(c.x+Math.cos(a)*d,120,WORLD-120), y:clamp(c.y+Math.sin(a)*d,120,WORLD-120)};
+}
+var TUT_STEPS=[
+  {title:'Move', text:function(){return touchMode?'Drag anywhere on the screen. Your cell follows your finger.':'Move your mouse. Your cell follows the pointer.';},
+   done:function(){return tut.moved>=450;}},
+  {title:'Eat food', text:function(){return 'Glowing dots are food. Eat a handful to grow.';},
+   done:function(){return meCenter().m>=60;}},
+  {title:'Eat a cell', text:function(){return 'You can eat any cell with at least 15% less mass than yours. Chase the small cyan cell. A green ring means you can eat it.';},
+   enter:function(){
+     var p=tutAhead(380), b=newOwner('Dot',HUES[1],true); b.dummy=true; b.think=1e9;
+     var cell=spawnCell(b,12,p.x,p.y); b.tx=p.x; b.ty=p.y; players.push(b); allCells.push(cell); tut.dummy=b;
+   },
+   done:function(){return !tut.dummy.alive;}},
+  {title:'Eject mass', text:function(){return touchMode?'Hold the Eject button to shoot out a little mass. Eject twice. It can feed friends or spikes.':'Hold W to shoot out a little mass. Eject twice. It can feed friends or spikes.';},
+   enter:function(){topUp(70);},
+   done:function(){return tut.ev.eject>=2;}},
+  {title:'Split', text:function(){return touchMode?'Tap Split to cut your cell in two. The new half launches forward, great for catching prey. Your cells merge back after a while.':'Press Space to cut your cell in two. The new half launches forward, great for catching prey. Your cells merge back after a while.';},
+   enter:function(){topUp(80);},
+   done:function(){return me.cells.length>=2;}},
+  {title:'Power-ups', text:function(){return 'Glowing orbs give a short boost: speed, shield, spike layer or magnet. Grab the amber one.';},
+   enter:function(){
+     var p=tutAhead(340);
+     powers.push({state:'on',type:'speed',x:p.x,y:p.y,born:now,expires:now+90,cd:0});
+   },
+   done:function(){return me.fx.speed>now||me.fx.shield>now||me.fx.spike>now||me.fx.magnet>now;}},
+  {title:'Spikes', info:true, text:function(){return 'Green spiky balls pop big cells into pieces. If you are much bigger than a spike, steer clear. Small cells can slip past. Every cell that gets eaten leaves a new spike on the map.';},
+   enter:function(){
+     var p=tutAhead(300);
+     viruses.push({x:p.x,y:p.y,r:rad(100),m:100,feed:0,bx:0,by:0,born:now,owner:null,safeUntil:0});
+   }},
+  {title:'Ready', info:true, last:true, text:function(){return 'That is everything: eat, split, dodge spikes and grab power-ups. Good luck!';}}
+];
+function tutBegin(){
+  tut={i:-1,doneT:0,moved:0,lx:0,ly:0,ev:{eject:0,split:0},dummy:null};
+  ui.dataset.tut='1';
+  powers.length=0;
+  var c=meCenter(), n=0, i;
+  for(i=0;i<food.length&&n<45;i++){
+    var a=Math.random()*TAU, d=160+Math.random()*460;
+    food[i].x=clamp(c.x+Math.cos(a)*d,40,WORLD-40); food[i].y=clamp(c.y+Math.sin(a)*d,40,WORLD-40); food[i].dead=false; n++;
+  }
+  tut.lx=c.x; tut.ly=c.y;
+  tutGo(0);
+}
+function tutClear(){tut=null; ui.dataset.tut='0'; $('tut').hidden=true;}
+function tutGo(i){
+  if(!tut||i>=TUT_STEPS.length) return;
+  tut.i=i; tut.doneT=0;
+  var s=TUT_STEPS[i], dots=$('tutDots'), k;
+  if(s.enter) s.enter();
+  $('tut').hidden=false; $('tut').className='hud panel';
+  $('tutCount').textContent='Tutorial '+(i+1)+'/'+TUT_STEPS.length;
+  $('tutTitle').textContent=s.title; $('tutText').textContent=s.text();
+  $('tutNext').textContent=s.last?'Play':(s.info?'Next':'Skip step');
+  $('tutExit').textContent=s.last?'Menu':'Exit';
+  dots.textContent='';
+  for(k=0;k<TUT_STEPS.length;k++){var d=document.createElement('i'); d.className=k<i?'ok':(k===i?'on':''); dots.appendChild(d);}
+}
+function tutUpdate(dt){
+  if(!tut||menuOpen||state!=='play'||!me||!me.alive||tut.i<0) return;
+  var s=TUT_STEPS[tut.i], c=meCenter();
+  tut.moved+=hyp(c.x-tut.lx,c.y-tut.ly); tut.lx=c.x; tut.ly=c.y;
+  if(tut.doneT>0){tut.doneT-=dt; if(tut.doneT<=0) tutGo(tut.i+1); return;}
+  if(s.info) return;
+  if(s.done()){
+    tut.doneT=1.1;
+    $('tut').className='hud panel done'; $('tutTitle').textContent='Nice! '+s.title+' done';
+    sfxPickup();
+  }
+}
+$('tutNext').addEventListener('click',function(){
+  if(!tut) return;
+  if(TUT_STEPS[tut.i].last) startGame(); else tutGo(tut.i+1);
+});
+$('tutExit').addEventListener('click',function(){
+  tutClear(); state='menu'; me=null; paused=false;
+  joy.id=null; touchEject=false; keyW=false; wantSplit=false;
+  botTarget=wantBots; initWorld(); computeLeaderboard();
+  openMenu();
 });
 
 /* ---------- main loop ---------- */
@@ -1546,6 +1858,7 @@ function frame(t){
     if(n>=4) acc=0;
   }
   updateCamera(dt);
+  if(!paused){updateFx(dt); tutUpdate(dt);}
   if(!(menuOpen&&(frameN&1))) render();   /* the arena behind the menu only needs half the frames */
   hud();
   frameN++;

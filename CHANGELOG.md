@@ -2,6 +2,14 @@
 
 Versions are bumped on every change that gets pushed. The current version is shown at the bottom of the menu in the game (for example `v0.5.1`) and each version is tagged in this repo.
 
+## v0.6.0
+- Tutorial: optional guided practice run from the menu (move, eat, eat a cell, eject, split, power-ups, spikes). Never forced, skippable at any time
+- Settings screen: music and effects volume, screen shake on/off, left- or right-handed touch buttons, joystick size. All saved on the device
+- Game feel: burst and ring effects and floating +mass numbers when you eat, screen shake when you are eaten or pop on a spike
+- Game over screen: best rank, time as #1 and a "New best" badge
+- Four more colors (12 total) and four skin patterns (Plain, Dots, Rings, Star)
+- Menu: Play button stays visible while the menu scrolls on phones, Tutorial and Settings buttons moved to the top
+
 ## v0.5.2
 - Version number moved under the tagline in the menu
 
