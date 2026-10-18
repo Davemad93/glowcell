@@ -2,6 +2,9 @@
 
 Versions are bumped on every change that gets pushed. The current version is shown at the bottom of the menu in the game (for example `v0.5.1`) and each version is tagged in this repo.
 
+## v0.5.2
+- Version number moved under the tagline in the menu
+
 ## v0.5.1
 - Version number shown in the menu
 - Changelog added, releases tagged
